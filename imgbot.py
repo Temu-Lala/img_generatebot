@@ -1,4 +1,3 @@
-
 import logging
 import requests
 from telegram import Update
@@ -12,6 +11,7 @@ logger = logging.getLogger(__name__)
 
 # Your bot's token from BotFather
 TOKEN = '6940579564:AAEzFNFbGpZfmGyzE2J6JDi7WXMCtUKpoq8'
+
 # Pexels API key and endpoints
 PEXELS_API_KEY = 'pwEmwe1I7cJ9i17zRt4kWRMJJqjQ8dFA2eeIOZgXWi5PmBw5b7v7V7uH'
 PEXELS_PHOTO_URL = 'https://api.pexels.com/v1/search'
@@ -72,7 +72,6 @@ async def handle_description(update: Update, context: CallbackContext) -> None:
 
 # Function to handle the /about command
 async def about(update: Update, context: CallbackContext) -> None:
-    # Your detailed profile in multiple parts
     about_text_1 = (
         "Hello! I am **Temesgen**, a Software Engineer from Ethiopia specializing in full-stack development. "
         "I focus on building modern, scalable web applications using the latest technologies.\n\n"
@@ -100,7 +99,6 @@ async def about(update: Update, context: CallbackContext) -> None:
         "- National Exit Exam: Software Engineering degree with a 3.2 GPA.\n\n"
         "You can explore my work through the following links:\n"
         "- **Portfolio**: [https://temesgen-lala.vercel.app/]\n"
-         "- **Portfolio**: [https://matstech.vercel.app/]\n"
         "- **GitHub**: [https://github.com/Temu-Lala]"
     )
 
@@ -117,7 +115,10 @@ async def portfolio(update: Update, context: CallbackContext) -> None:
 # Function to handle errors
 async def error(update: Update, context: CallbackContext) -> None:
     logger.warning(f'Update {update} caused error {context.error}')
-    await update.message.reply_text('An error occurred. Please try again later.')
+    if update and update.message:
+        await update.message.reply_text('An error occurred. Please try again later.')
+    else:
+        logger.error('No message context available for error handling.')
 
 def main() -> None:
     # Create the application and pass your bot token
