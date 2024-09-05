@@ -1,3 +1,4 @@
+
 import logging
 import requests
 from telegram import Update
@@ -11,7 +12,6 @@ logger = logging.getLogger(__name__)
 
 # Your bot's token from BotFather
 TOKEN = '6940579564:AAEzFNFbGpZfmGyzE2J6JDi7WXMCtUKpoq8'
-
 # Pexels API key and endpoints
 PEXELS_API_KEY = 'pwEmwe1I7cJ9i17zRt4kWRMJJqjQ8dFA2eeIOZgXWi5PmBw5b7v7V7uH'
 PEXELS_PHOTO_URL = 'https://api.pexels.com/v1/search'
@@ -70,6 +70,50 @@ async def handle_description(update: Update, context: CallbackContext) -> None:
     else:
         await update.message.reply_text(f'Sorry, no {search_type}s found for your description.')
 
+# Function to handle the /about command
+async def about(update: Update, context: CallbackContext) -> None:
+    # Your detailed profile in multiple parts
+    about_text_1 = (
+        "Hello! I am **Temesgen**, a Software Engineer from Ethiopia specializing in full-stack development. "
+        "I focus on building modern, scalable web applications using the latest technologies.\n\n"
+        "**Key Skills**:\n"
+        "- Frontend: React, Next.js, Tailwind CSS, Material UI\n"
+        "- Backend: Python, Django, Node.js, Express.js\n"
+        "- Databases: PostgreSQL, MongoDB, MySQL\n"
+        "- APIs & Authentication: REST API development, JWT\n"
+        "- Version Control: Git, GitHub"
+    )
+
+    about_text_2 = (
+        "**Highlighted Projects**:\n"
+        "- **Uniconnect Ethiopia**: A social media platform combining features of LinkedIn and Facebook.\n"
+        "- **Ethiopian Sign Language Detection**: AI-based interpretation of Ethiopian sign language.\n"
+        "- **Book Rental Application**: A JWT-based book rental platform with role-based access.\n"
+        "- **Blue Homes Sell**: A real estate platform for buying and selling properties.\n"
+        "- **AI-Based Short Note Generation Platform**: AI tool for generating student notes from textbooks."
+    )
+
+    about_text_3 = (
+        "**Certifications**:\n"
+        "- Cisco Networking Academy: Network programming and configuration.\n"
+        "- FreeCodeCamp: Responsive Web Design and Machine Learning with Python.\n"
+        "- National Exit Exam: Software Engineering degree with a 3.2 GPA.\n\n"
+        "You can explore my work through the following links:\n"
+        "- **Portfolio**: [https://temesgen-lala.vercel.app/]\n"
+         "- **Portfolio**: [https://matstech.vercel.app/]\n"
+        "- **GitHub**: [https://github.com/Temu-Lala]"
+    )
+
+    # Send the description in multiple parts
+    await update.message.reply_text(about_text_1, parse_mode='Markdown')
+    await update.message.reply_text(about_text_2, parse_mode='Markdown')
+    await update.message.reply_text(about_text_3, parse_mode='Markdown')
+
+# Function to handle the /portfolio command
+async def portfolio(update: Update, context: CallbackContext) -> None:
+    portfolio_link = "Check out my portfolio here: https://temesgen-lala.vercel.app/"
+    await update.message.reply_text(portfolio_link)
+
 # Function to handle errors
 async def error(update: Update, context: CallbackContext) -> None:
     logger.warning(f'Update {update} caused error {context.error}')
@@ -81,6 +125,8 @@ def main() -> None:
 
     # Define command handlers
     application.add_handler(CommandHandler("start", start))
+    application.add_handler(CommandHandler("about", about))  # Handler for /about command
+    application.add_handler(CommandHandler("portfolio", portfolio))  # Handler for /portfolio command
     
     # Handle text messages sent by the user
     application.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_description))
